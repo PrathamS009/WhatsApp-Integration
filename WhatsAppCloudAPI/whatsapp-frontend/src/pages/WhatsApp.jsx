@@ -13,14 +13,20 @@ function WhatsAppPage() {
         body: JSON.stringify({ number, message }),
       });
       const data = await res.json();
-      setStatus(JSON.stringify(data));
+
+      if (data.status === "success") {
+        setStatus("✅ Message sent successfully");
+      } else if (data.status === "error") {
+        setStatus("⚠️ " + data.message);
+      }
     } catch (err) {
-      setStatus("Error sending message");
+      setStatus("❌ Error sending message");
     }
   };
 
+
   return (
-    <div className="p-6 max-w-md mx-auto">
+    <div className="p-6 h-[500px] w-[100px] max-w-md mx-auto">
       <h2 className="text-2xl font-bold mb-4">Send WhatsApp Message</h2>
 
       <input
@@ -30,7 +36,7 @@ function WhatsAppPage() {
         onChange={(e) => setNumber(e.target.value)}
         className="w-full p-5 border rounded-lg mb-4 text-lg"
       />
-      <br />
+      
       <textarea
         placeholder="Enter your message"
         value={message}
